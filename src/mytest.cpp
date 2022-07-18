@@ -1,9 +1,7 @@
-#include <iostream>
+#include "mytest.h"
 
-// Includes common necessary includes for development using depthai library
-#include "depthai/depthai.hpp"
-
-int main() {
+void camera(void)
+{
     using namespace std;
     // Create pipeline
     dai::Pipeline pipeline;
@@ -28,7 +26,8 @@ int main() {
     dai::Device device(pipeline, dai::UsbSpeed::SUPER);
 
     cout << "Connected cameras: ";
-    for(const auto& cam : device.getConnectedCameras()) {
+    for (const auto& cam : device.getConnectedCameras())
+    {
         cout << cam << " ";
     }
     cout << endl;
@@ -39,16 +38,17 @@ int main() {
     // Output queue will be used to get the rgb frames from the output defined above
     auto qRgb = device.getOutputQueue("rgb", 4, false);
 
-    while(true) {
+    while (true)
+    {
         auto inRgb = qRgb->get<dai::ImgFrame>();
 
         // Retrieve 'bgr' (opencv format) frame
         cv::imshow("rgb", inRgb->getCvFrame());
 
         int key = cv::waitKey(1);
-        if(key == 'q' || key == 'Q') {
+        if (key == 'q' || key == 'Q')
+        {
             break;
         }
     }
-    return 0;
 }
